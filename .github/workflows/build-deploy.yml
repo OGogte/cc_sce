@@ -3,10 +3,11 @@ name: Build & deploy
 on:
   push:
     branches:
-      -master
+      - master
   pull_request:
     branches:
-      -master
+      - master
+
 jobs:
   build:
     name: Build
@@ -16,15 +17,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install flutter
+      - name: Install Flutter
         uses: subosito/flutter-action@v1
         with:
-          flutter-version:'3.7.11'
+          flutter-version: '3.7.11'
 
-      - name: Get Dependencies
+      - name: Get dependencies
         run: flutter pub get
 
-      - name: Build release Project
+      - name: Test project
+        run: flutter test
+
+      - name: Build release project
         run: flutter build web
 
       - name: Upload production-ready build files
@@ -40,7 +44,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
 
     steps:
-      - name: Download Artifact
+      - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: production-files
